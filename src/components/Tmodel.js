@@ -7,11 +7,7 @@ var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 
 const Tmodel = (props) => {
 
-  const [url, setUrl] = useState(process.env.REACT_APP_LOCATION);
-  useEffect(() => {
-   setUrl()
-  },[])
-    
+  const [url, setUrl] = useState(process.env.REACT_APP_LOCATION);    
 
     return(<Container>
                  <Content>
@@ -25,12 +21,16 @@ const Tmodel = (props) => {
                               initialViewState={{ 
                                 latitude: props.local.lat,
                                 longitude: props.local.log,
-                                zoom: 3.5,
+                                zoom: 7.5,
                               }}
                               mapStyle="mapbox://styles/mapbox/streets-v11">
                                <Marker
                                  latitude={props.local.lat}
-                                 longitude={props.local.log}/>
+                                 longitude={props.local.log}
+                                 onClick={(e) => {
+                                  alert(e);
+                                 }}
+                                 />
                            </Map>
                         </div>
                     </CenterElement>

@@ -21,7 +21,7 @@ const About = () => {
         <br/>
         <Shades data-aos="slide-right">
             We were founded on 10th of august 1990
-            in ohio, USA. For the past 30years we
+            in London, Uk. For the past 30years we
             have and been know for commitment to
             duty and Efficiency to serve all over
             the world. Our delivery is fast and safe.
@@ -36,7 +36,7 @@ const About = () => {
           We render all type of delivery. Air, land 
           and sea right to your doorstep at an 
           affordable price all around the world
-          regardless of the quality and distaace.
+          regardless of the quality and distance.
           Our delivery is fast and safe.
         </Shades>
 
@@ -48,8 +48,8 @@ const About = () => {
         <br/>
         <Shades data-aos="flip-up">
           You can contact us via whatsapp
-          (+1(513) 443-8067) email
-          (mattwardm1980@gmail.com) Our deliver is fast and safe.
+          (+447561093654) email (info@myrapidroute.com) 
+          Our deliver is fast and safe.
         </Shades>
     </Table>
   )

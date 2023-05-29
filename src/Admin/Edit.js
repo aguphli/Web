@@ -2,24 +2,19 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Model from './Model'
 import Header from './Header';
-import { ListOrders, ListUsers } from '../RouteBackEnd';
+import { Oval } from 'react-loader-spinner';
+import { ListOrders, ListUserOrders, ListUsers } from '../RouteBackEnd';
 
 const  Edit = () => {
   const [list, setList] = useState([])  
 
+
   const loadOrders =  async() => {
    let res = await ListOrders();
-   console.log(res);
    if (res.message)
       setList(res.message);
   }
 
-
-  const loadUsers = async() => {
-    let res = await ListUsers();
-    if (res.message)
-      setList(res.message);
-  }
   
 
   useEffect(() => {
@@ -29,7 +24,14 @@ const  Edit = () => {
   return (
     <Container>
         <Body>
-           {list.map((v,i) => <Model v={v}/>)}
+           {
+           list.length <= 0 ?
+           <Spin>
+             <Oval height={90} width={90} color='navy' strokeWidth={5} />
+           </Spin>
+             :
+            list.reverse().map((v,i) => <Model v={v}/>)
+           }
         </Body>
     </Container>
   )
@@ -57,6 +59,15 @@ padding-top:50px;
 ::-webkit-scrollbar {
 display: none;
 }
+`;
+
+
+const Spin = styled.div`
+width:100px;
+height:100px;
+margin-left:auto;
+margin-right:auto;
+margin-top:20%;
 `;
 
 export default Edit

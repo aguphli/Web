@@ -12,11 +12,10 @@ const Hero = () => {
 
  const [show, setShow] = useState("");  
  const [status, setStatus] = useState("Track");  
- const [serial, setSerial] = useState("");   
- const [showR, setShowR] = useState(false);  
+ const [serial, setSerial] = useState("");    
  const [showModel, setShowModel] = useState("");  
  const [local, setLocal] = useState({lat:0,log:0});
- const [isLogin, setIsLogin] = useState(JSON.parse(localStorage.getItem("User")) ? JSON.parse(localStorage.getItem("User")) : null ) 
+ const [isLogin, setIsLogin] = useState(JSON.parse(localStorage.getItem("User")) ? JSON.parse(localStorage.getItem("User")) : null) 
 
 
  const OpenModel =  async (e) => {
@@ -35,34 +34,38 @@ const Hero = () => {
 }
 
 
+
+
 const GetLocation = async () => {
     if(serial.trim().length > 0){
-        let res = await LoadGeoPoints(serial);
+        let res = await LoadGeoPoints(serial,isLogin);
+        console.log(res.message)
         if(res){
           setShow(false);
-          if(!JSON.stringify(res.message).includes("{}")){
-            if(res.message.lat !== "0" && res.message.log !== "0" && res.message.lat != 0 && res.message.log != 0){
-                local.lat = res.message.lat;
-                local.log = res.message.log;
+          if(JSON.stringify(res.message).includes("GeoPoint")){
+            if(res.message.GeoPoint.lat !== "0" && res.message.GeoPoint.log !== "0" && res.message.GeoPoint.lat != 0 && res.message.GeoPoint.log != 0){
+                local.lat = res.message.GeoPoint.lat;
+                local.log = res.message.GeoPoint.log;
                 setStatus("View")
             }else
                Swal.fire({title:"Order status",text:"Order is not Live Yet.",icon:"info"})
           }else
-                Swal.fire({title:"Order Status",text:"Order not found.", icon:"info"});
+                Swal.fire({title:"Order Status",text: res.message, icon:"info"});
         }
     }
 }
 
 
 
+
 const Send = async (e) => {
     if(serial.trim().length <= 0)
-       Swal.fire({title:"Form Validation",text:"Pls fill the Order ID.",icon:"info"});
+       Swal.fire({title:"Form Validation",text:"Pls fill the Order ID or Login.",icon:"info"});
     else{
         OpenModel(e); 
         GetLocation();
     }
-    setShowR(true);
+    setShow(true);
 }
 
 
@@ -72,6 +75,7 @@ useEffect(() => {
     AOS.init();
     AOS.refresh();
     console.log(isLogin);
+    sessionStorage.removeItem("remoteOrder");
 }, [])
 
   return (
@@ -80,10 +84,10 @@ useEffect(() => {
             <WriteUp>
                     <b> 
                         Search no more MyRapidroute is here to serve you best despite
-                        the distaace and quality. We have been know for efficiency
+                        the distance and quality. We have been know for efficiency
                         and commitment for the past ten years, and we have expert in
-                        our various departments. We have at list 5 years expricence
-                        in their field. We deliver our goods through Air Land and Sea
+                        our various departments. Who has at list 5 years expricence
+                        in their field. We deliver our goods through Air, Land and Sea
                         to your door step at affordable prices.
                         So what are you waiting for?, Put an end to your search today!!!.
                     </b> 
@@ -96,7 +100,7 @@ useEffect(() => {
             </Logo>
         </Left>
          <Input>
-            <input value={serial} onChange={(e) => setSerial(e.target.value)}/>
+            <input placeholder='Tracking Id' value={serial} onChange={(e) => setSerial(e.target.value)}/>
             <button onClick={(e)=>{isLogin ? Send(e) : Swal.fire({title:"Login", text:"Pls Login to Track.",icon:"info"})}}> {show ? <Oval  color='#fff' height={12}  width={12}/> : status}</button>
          </Input>
          {showModel === "open"  &&  local.lat !== 0 && local.log !== 0 ? <Tmodel local={local} fun={OpenModel}/> : ""}
@@ -121,8 +125,6 @@ height:115vh;
 
 
 
-
-
 const Left = styled.div`
 width:100%;
 height:80%;
@@ -131,6 +133,7 @@ display:flex;
 flex-direction:column;
 }
 `;
+
 
 const WriteUp = styled.div`
 margin-left:50px;
@@ -149,7 +152,6 @@ flex-flow:column;
 justify-content:center;
 align-items:center;
 text-align:center;
-
 }
 `;
 
@@ -178,16 +180,18 @@ height:300px;
 `;
 
 
+
 const Input= styled.div`
 width:50%;
 height:100px;
 margin-top:50px;
 justify-content:space-evenly;
 input{
-margin-left:50px;
-padding-left:5px;
 width:70%;
 height:30px;
+margin-left:50px;
+padding-left:5px;
+background-color:#fff;
 }
 button{
 background:red;
@@ -197,10 +201,9 @@ width:50px;
 border:none;
 cursor:pointer;
 }
-
 @media(max-width:980px){
-display:flex;
 width:90%;
+display:flex;
 justify-content:center;
 align-items:center;
 text-align:center;
@@ -212,5 +215,6 @@ margin-left:0px;
 }
 }
 `;
+
 
 export default Hero

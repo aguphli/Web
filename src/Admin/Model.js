@@ -1,6 +1,8 @@
 import React,{useState} from 'react'
 import styled from 'styled-components'
 import Tmodel from '../Admin/Tmodel'
+import Swal from 'sweetalert2';
+import { DeleteOrder } from '../RouteBackEnd';
 
 const Model = (props) =>{
 
@@ -22,13 +24,33 @@ const Model = (props) =>{
 }
 
 
+
+const deleteOrder = () => {
+  
+    Swal.fire({
+      icon:"warning",
+      title: 'Are you sure you want to delete?',
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      denyButtonText: `Cancel`,
+    }).then(async(result) => {
+      if (result.isConfirmed) {
+        let res = await DeleteOrder(props.v.track_id); 
+        console.log(res.message);
+         Swal.fire(` ${res.message} !`, '', 'success');
+         setTimeout(()=> window.location.href = window.location.href,2000)
+      } 
+    })
+}
+
+
   return (
     <Container>
       <table>
-
         <tr>
           <td>
            <button onClick={(e) => OpenModel(e)}>Update</button>
+           <button onClick={(e) => deleteOrder(e)}>Delete</button>
           </td>
         </tr>
 
@@ -65,6 +87,13 @@ const Model = (props) =>{
            TrackID:
            <br/>
             {props.v.track_id} 
+          </td>
+          </tr>
+          <tr>
+          <td>
+           GeoPoint:
+           <br/>
+            Lat: {props.v.GeoPoint.lat}  Log: {props.v.GeoPoint.log}
           </td>
           </tr>
       </table>

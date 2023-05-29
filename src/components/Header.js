@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { RiCloseLine, RiMenu2Line } from 'react-icons/ri';
 import Login from './Login';
 import Swal from 'sweetalert2';
@@ -9,12 +10,25 @@ const  Header = () =>{
  const [tab, setTab] = useState(""); 
  const [open, setOpen] = useState(false); 
  const [order, setOrder] = useState(9); 
- const [isLogin, setIsLogin] = useState(JSON.parse(localStorage.getItem("User")) ? JSON.parse(localStorage.getItem("User")) : null  ) 
+ const [isLogin, setIsLogin] = useState(JSON.parse(localStorage.getItem("User")) ? JSON.parse(localStorage.getItem("User")) : null) 
+ const history = useNavigate();
 
 
 const ScrollPos = (x,y) => {
     window.scrollTo(x,y);
     setOpen(false);
+}
+
+
+
+
+const ListOrders = () => {
+  setOpen(false);
+  console.log(isLogin);
+     if(isLogin != null || isLogin != undefined)
+         history("/orders")
+    else
+       Swal.fire({icon:"info",title:"Info",text:"PLs Login to see Orders"})
 }
 
 
@@ -48,11 +62,12 @@ const OpenModel =  async (e,n) => {
           MyRapidroute
         </Name>
         <LeftTabs>
+           <h4 onClick={(e) => ListOrders()}>List orders</h4> 
            <h4 onClick={(e) => OpenModel(e,1)}>Place order</h4> 
            <h3 onClick={(e) => ScrollPos(600,600)}>About us</h3> 
            <h3 onClick={(e) => ScrollPos(1700,1700)}>Contact us</h3> 
            <h3 onClick={(e) => ScrollPos(1200,1200)}>Services</h3> 
-           <h3 onClick={(e) => ScrollPos(2200,2200)}>Sign up</h3> 
+           <h3 onClick={(e) => ScrollPos(2200,2200)}>SignUp</h3> 
            <h3 onClick={(e) => OpenModel(e,0)}>{isLogin ? "SignOut" : "SignIn"}</h3> 
         </LeftTabs>
         
@@ -65,11 +80,12 @@ const OpenModel =  async (e,n) => {
             
           
               <div id='e2'>
+               <h4 onClick={(e) => ListOrders()}>List orders</h4> 
                <h4 onClick={(e) => OpenModel(e,1)}>Place order</h4> 
                 <h3 onClick={(e) => ScrollPos(600,600)}>About us</h3> 
                 <h3 onClick={(e) => ScrollPos(1200,1200)}>Services</h3> 
                 <h3 onClick={(e) => ScrollPos(1700,1700)}>Contact us</h3> 
-                <h3 onClick={(e) => ScrollPos(2200,2200)}>Sign up</h3> 
+                <h3 onClick={(e) => ScrollPos(2200,2200)}>SignUp</h3> 
                 <h3 onClick={(e) => OpenModel(e,0)}>{isLogin ? "SignOut" : "SignIn"}</h3> 
               </div>
           </NavBuild>
@@ -129,6 +145,7 @@ border-radius:5px;
 color:#fff;
 padding:5px;
 width:100px;
+margin-top:10px;
 }
 }
 `;
@@ -158,7 +175,7 @@ color:#fff;
 display:flex;
 align-items:center;
 h3{
-margin:30px;
+margin:20px;
 cursor:pointer;
 }
 h4{
@@ -168,6 +185,7 @@ border-radius:5px;
 color:#fff;
 padding:5px;
 width:100px;
+margin-right:10px;
 }
 @media(max-width:980px){
 display:none;

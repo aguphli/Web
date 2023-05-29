@@ -70,7 +70,7 @@ const Footer = () => {
             <Submit onClick={(e) => SendRegisteration()}> {!load ? "Register" : <Oval color='#fff' height={20} width={20} />}</Submit>
         </Form>
         <Marquee style={{backgroundColor:"#000",color:"yellow",height:"60px", marginTop:"10px"}} gradient={false}>
-           You can contact us via email (mattwardm1980@gmail.com) or call on (+447561093654) Our deliver is fast and safe.
+           You can contact us via email (info@myrapidroute.com) or call on (+447561093654) Our deliver is fast and safe.
         </Marquee>
     </Container>
   )
@@ -100,7 +100,7 @@ height:25px;
 color:#fff;
 margin-left:auto;
 margin-right:auto;
-margin-top:50px;
+margin-top:${(props) => props.h  ? props.h : "50px"};
 padding:10px;
 display:flex;
 justify-content:center;
@@ -109,6 +109,7 @@ align-items:center;
 border-radius:10px;
 background:blue;
 cursor:pointer;
+display:${(props) => props.show} ;
 `;
 
 

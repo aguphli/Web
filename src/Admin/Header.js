@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components';
 import { RiCloseLine, RiMenu2Line } from 'react-icons/ri';
 import Login from './Login';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const  Header = () =>{
 
@@ -9,6 +11,7 @@ const  Header = () =>{
  const [open, setOpen] = useState(false); 
  const [tab, setTab] = useState(""); 
  const [order, setOrder] = useState(9); 
+ const history = useNavigate();
 
 const ScrollPos = (x,y) => {
     window.scrollTo(x,y);
@@ -17,20 +20,7 @@ const ScrollPos = (x,y) => {
 
 
 const OpenModel =  async (e,n) => {
-  e.preventDefault();
-  setOpen(false);
-  setOrder(n);
-  switch(tab){
-      case "open":
-            setTab("close");
-            break;
-      case "close":
-           setTab("open");
-            break;
-      default:
-          setTab("close");
-           break;
-  }
+  history("/users");
 }
 
 
@@ -57,12 +47,6 @@ const OpenModel =  async (e,n) => {
           : 
           ""
         }
-
-        {tab  === "open" ?
-           <Login fun={OpenModel} type={order}/>
-           :
-           ""}
-
        <NavBars>
         <RiMenu2Line onClick={(e) => setOpen(true)} color='#ffffff' size={30} />
       </NavBars>
@@ -91,6 +75,10 @@ flex-flow:column;
 position:absolute;
 z-index:99999999;
 font-family: "Poppins", sans-serif;
+#e1{
+padding:15px;
+margin-left:auto;
+}
 #e2{
 padding:15px;
 margin-left:auto;

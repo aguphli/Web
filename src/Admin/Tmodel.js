@@ -12,24 +12,37 @@ const Tmodel = (props) => {
 
   const [Lat, setlat] = useState("");
   const [Log, setLog] = useState("");
+  const [status,setStatus] = useState("");
+  const [mode,setMode] = useState("");
+  const [amount,setAmount] = useState("");
+  const [weight,setWeight] = useState("");
+  const [courier,setCourier] = useState("");
+  const [parcel_id, setParcel_id] = useState("");
+  const [address, setAddress] = useState("");
   const [load, setLoad] = useState(false);
  
   const Update = async () => {
+     if(Is(Lat) && Is(Log) && Is(status) && Is(mode) && Is(amount) && Is(weight) && Is(courier) && Is(parcel_id) && Is(address)){
        setLoad(true);
-       let res = await UpdateOrder(Lat,Log,props.track);
+       let res = await UpdateOrder(Lat,Log,status,mode,amount,weight,courier,parcel_id,address,props.track);
        if(res){
          setLoad(false);
-         Swal.fire({title:"info",text:res.message,'icon':"info"});
+         Swal.fire({title:"Info",text:res.message,icon:"info"});
        }
+    }else
+      Swal.fire({title:"From validation",text:"Pls fill out all fields !",icon:"info"});
   }
 
 
+  function Is(v){
+    return v.trim().length > 0 ? true : false;
+  }
     
 
     return(<Container>
                  <Content style={{padding:"20px"}}>
                     <Header>
-                    <h2>Update Location</h2>
+                    <h2>Order Id: {props.track}</h2>
                     <button  onClick={(e) => props.fun(e)}>X</button>
                     </Header>
                     <CenterElement>
@@ -37,9 +50,30 @@ const Tmodel = (props) => {
                      <input placeholder='Latitude' type='number' value={Lat}  onChange={(e) => setlat(e.target.value)} />
                     </Input>
                     <Input>
-                        <input placeholder='Logtitude' type='number'  value={Log}  onChange={(e) => setLog(e.target.value)}/>
+                        <input placeholder='Longtitude' type='number'  value={Log}  onChange={(e) => setLog(e.target.value)}/>
                     </Input>
-                     <Submit onClick={(e) => Update()}> {!load ? "Update" : <Oval color='#fff' height={20} width={20} />}</Submit>
+                    <Input>
+                        <input placeholder='Status (Transit or Arrived)' type='text'  value={status}  onChange={(e) => setStatus(e.target.value)}/>
+                    </Input>
+                    <Input>
+                        <input placeholder='Mode (Air Freight, Land Freight, Sea Freight)' type='text'  value={mode}  onChange={(e) => setMode(e.target.value)}/>
+                    </Input>
+                    <Input>
+                        <input placeholder='Weight (10kg, 20kg etc...)' type='text'  value={weight}  onChange={(e) => setWeight(e.target.value)}/>
+                    </Input>
+                    <Input>
+                        <input placeholder='Courier name' type='text'  value={courier}  onChange={(e) => setCourier(e.target.value)}/>
+                    </Input>
+                    <Input>
+                        <input placeholder='Parcel Id' type='text'  value={parcel_id}  onChange={(e) => setParcel_id(e.target.value)}/>
+                    </Input>
+                    <Input>
+                        <input placeholder='Amount' type='text'  value={amount}  onChange={(e) => setAmount(e.target.value)}/>
+                    </Input>
+                    <Input>
+                        <input placeholder='Current Location (Address)' type='text'  value={address}  onChange={(e) => setAddress(e.target.value)}/>
+                    </Input>
+                     <Submit h={"20px"} onClick={(e) => Update()}> {!load ? "Update" : <Oval color='#fff' height={20} width={20} />}</Submit>
                     </CenterElement>
                   </Content> 
         </Container>
@@ -70,7 +104,7 @@ background-color: rgba(0,0,0,0.8);
 const Content  =  styled.div`
 max-width:45%;
 background-color: white;
-max-height:80%;
+max-height:88%;
 overflow:initial;
 border-radius: 5px;
 position: relative;
@@ -80,9 +114,10 @@ top:32px;
 margin: 0 auto;
 padding-bottom:20px;
 @media(max-width: 768px){
-top:10%;
+top:5%;
 max-width:100%;
 padding:15px;
+overflow-y:scroll;
 }
 
 `;
@@ -105,6 +140,9 @@ button{
 height:40px;
 width:40px;
 min-width:auto;
+}
+@media(max-width:768px){
+font-size:11px;
 }
 `;
 
